@@ -1,7 +1,7 @@
-import { type JSX } from "react";
+import { useState, type JSX } from "react";
 import { Menubar } from 'primereact/menubar';
 import type { MenuItem } from 'primereact/menuitem';
-import { Avatar } from 'primereact/avatar';
+import AuthRequests from "../../fetch/AuthRequests";
 
 interface CustomMenuItem extends MenuItem {
     badge?: number;
@@ -10,6 +10,22 @@ interface CustomMenuItem extends MenuItem {
 }
 
 function Navegacao(): JSX.Element {
+    // criando estado para controlar a renderização condicional
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+        const isAuth = localStorage.getItem('isAuth');
+        const token = localStorage.getItem('token');
+        return !!(isAuth && token && AuthRequests.checkTokenExpiry());
+    });
+
+     const logout = () => {
+        AuthRequests.removeToken();
+        setIsAuthenticated(false);
+    }
+
+    const [username] = useState(() => {
+        return localStorage.getItem('username') ?? '';
+    });
+
     const items: CustomMenuItem[] = [
         {
             label: 'Home',
@@ -21,19 +37,19 @@ function Navegacao(): JSX.Element {
             label: 'Alunos',
             icon: 'pi pi-star',
             className: 'm-5 text-white text-lg',
-            url: "#"
+            url: "/alunos"
         },
         {
             label: 'Livros',
             icon: 'pi pi-star',
             className: 'm-5 text-white text-lg',
-            url: "#"
+            url: "/livros"
         },
         {
             label: 'Empréstimos',
             icon: 'pi pi-star',
             className: 'm-5 text-white text-lg',
-            url: "#"   
+            url: "/emprestimos"   
         }
     ];
 
@@ -48,19 +64,31 @@ function Navegacao(): JSX.Element {
 
     const end = (
         <div className="flex align-items-center gap-2">
-            <p className="text-white content-center pr-[0.5rem]">Amy Elsner</p>
-            <Avatar
-                image="https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png"
-                shape="circle"
-                className="mr-10 !w-[25%] !h-[25%]"
-            />
+            {isAuthenticated ? (
+                <>
+                    <p className="text-white content-center pr-[0.5rem]">Olá, {username}</p>
+                    <button
+                        onClick={logout}
+                        className="px-4 py-2 mr-10 bg-red-600 text-white rounded hover:bg-red-700"
+                    >
+                        Sair
+                    </button>
+                </>
+            ) : (
+                <a
+                    href="/login"
+                    className="px-4 py-2 mr-10 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                    Login
+                </a>
+            )}
         </div>
     );
 
     return (
         <header className="card h-[12vh] bg-slate-700 content-center">
             <Menubar 
-                model={items} 
+                model={isAuthenticated ? items : [items[0]]} 
                 start={start} 
                 end={end} 
             />
