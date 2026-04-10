@@ -4,11 +4,13 @@ import Rodape from "../../components/Rodape/Rodape";
 
 function PLivros(): JSX.Element {
     return (
-        <>
+        <div className="pagina">
             <Navegacao/>
-            <p>Livros</p>
+            <div className="pagina-conteudo">
+                <p>Livros</p>
+            </div>
             <Rodape />
-        </>
+        </div>
     );
 }
 

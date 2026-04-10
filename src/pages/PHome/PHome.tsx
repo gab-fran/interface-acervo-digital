@@ -5,11 +5,11 @@ import Rodape from "../../components/Rodape/Rodape";
  
 function PHome(): JSX.Element {
     return (
-        <>
+        <div className="pagina">
             <Navegacao />
             <BoasVindas />
             <Rodape />
-        </>
+        </div>
     );
 }
 

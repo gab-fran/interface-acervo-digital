@@ -4,11 +4,13 @@ import Rodape from "../../components/Rodape/Rodape";
 
 function PEmprestimos(): JSX.Element {
     return (
-        <>
+        <div className="pagina">
             <Navegacao/>
-            <p>Emprestimos</p>
+            <div className="pagina-conteudo">
+                <p>Emprestimos</p>
+            </div>
             <Rodape />
-        </>
+        </div>
     );
 }
 

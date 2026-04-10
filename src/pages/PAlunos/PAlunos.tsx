@@ -5,11 +5,13 @@ import ListagemAluno from "../../components/Listagem/ListagemAluno/ListagemAluno
 
 function PAlunos(): JSX.Element {
     return (
-        <>
+        <div className="pagina">
             <Navegacao/>
-            <ListagemAluno />
+            <div className="pagina-conteudo">
+                <ListagemAluno />
+            </div>
             <Rodape />
-        </>
+        </div>
     );
 }
 

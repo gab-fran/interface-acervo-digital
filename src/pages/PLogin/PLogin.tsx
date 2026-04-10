@@ -11,7 +11,7 @@ import Rodape from "../../components/Rodape/Rodape";
 // Componente funcional que representa a página de login
 function PLogin(): JSX.Element {
     return (
-        <div className="pagina-grid">
+        <div className="pagina">
             {/* Renderiza o cabeçalho da página */}
             <Navegacao />
 
