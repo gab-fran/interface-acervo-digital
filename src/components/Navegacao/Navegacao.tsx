@@ -1,7 +1,10 @@
 import { useState, type JSX } from "react";
 import { Menubar } from 'primereact/menubar';
 import type { MenuItem } from 'primereact/menuitem';
+import { Avatar } from 'primereact/avatar';
+import { useNavigate } from 'react-router-dom';
 import AuthRequests from "../../fetch/AuthRequests";
+import appIcon from "../../assets/app-icon.png";
 
 interface CustomMenuItem extends MenuItem {
     badge?: number;
@@ -16,82 +19,93 @@ function Navegacao(): JSX.Element {
         const token = localStorage.getItem('token');
         return !!(isAuth && token && AuthRequests.checkTokenExpiry());
     });
+    
+    const navigate = useNavigate();
 
-     const logout = () => {
+    const logout = () => {
         AuthRequests.removeToken();
         setIsAuthenticated(false);
     }
 
-    const [username] = useState(() => {
-        return localStorage.getItem('username') ?? '';
-    });
+    const username = localStorage.getItem('username') ?? 'Usuário';
+    const email = localStorage.getItem('email') ?? '';
+    const avatarImage = "https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png";
 
     const items: CustomMenuItem[] = [
         {
             label: 'Home',
             icon: 'pi pi-home',
-            className: 'm-5 text-white text-lg',
+            className: 'mx-2 md:mx-4 text-white text-sm md:text-base lg:text-lg',
             url: "/"
         },
-        {
-            label: 'Alunos',
-            icon: 'pi pi-star',
-            className: 'm-5 text-white text-lg',
-            url: "/alunos"
-        },
-        {
-            label: 'Livros',
-            icon: 'pi pi-star',
-            className: 'm-5 text-white text-lg',
-            url: "/livros"
-        },
-        {
-            label: 'Empréstimos',
-            icon: 'pi pi-star',
-            className: 'm-5 text-white text-lg',
-            url: "/emprestimos"   
-        }
+        ...(isAuthenticated ? [
+            {
+                label: 'Alunos',
+                icon: 'pi pi-star',
+                className: 'mx-2 md:mx-4 text-white text-sm md:text-base lg:text-lg',
+                url: "/alunos"
+            },
+            {
+                label: 'Livros',
+                icon: 'pi pi-star',
+                className: 'mx-2 md:mx-4 text-white text-sm md:text-base lg:text-lg',
+                url: "/livros"
+            },
+            {
+                label: 'Empréstimos',
+                icon: 'pi pi-star',
+                className: 'mx-2 md:mx-4 text-white text-sm md:text-base lg:text-lg',
+                url: "/emprestimos"   
+            }
+        ] : [])
     ];
 
     const start = (
         <img
             alt="logo"
-            src='./src/assets/app-icon.png'
-            height="100"
-            className="h-20 p-3 ml-10 mr-5 h-[7rem]"
+            src={appIcon}
+            className="h-10 md:h-12 lg:h-14 w-auto ml-2 md:ml-4 lg:ml-6"
         />
     );
 
-    const end = (
-        <div className="flex align-items-center gap-2">
-            {isAuthenticated ? (
-                <>
-                    <p className="text-white content-center pr-[0.5rem]">Olá, {username}</p>
-                    <button
-                        onClick={logout}
-                        className="px-4 py-2 mr-10 bg-red-600 text-white rounded hover:bg-red-700"
-                    >
-                        Sair
-                    </button>
-                </>
-            ) : (
-                <a
-                    href="/login"
-                    className="px-4 py-2 mr-10 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                    Login
-                </a>
-            )}
+    const userActions = isAuthenticated ? (
+        <div className="flex items-center justify-end mr-4 md:mr-6 lg:mr-10 gap-2 md:gap-4">
+            <div className="flex flex-col pr-2 md:pr-3 hidden sm:flex">
+                <p className="text-white font-semibold m-0 text-sm md:text-base">{username}</p>
+                <p className="text-white text-xs md:text-sm m-0">{email}</p>
+            </div>
+            <Avatar
+                image={avatarImage}
+                shape="circle"
+                className="!w-8 !h-8 md:!w-10 md:!h-10"
+            />
+            <button
+                className="bg-white ml-2 md:ml-4 text-slate-700 px-3 py-1.5 md:px-5 md:py-2 rounded border-none cursor-pointer flex items-center justify-center gap-1 hover:bg-gray-100 transition-colors text-xs md:text-sm"
+                onClick={logout}
+            >
+                <i className="pi pi-sign-out"></i>
+                <span>Sair</span>
+            </button>
         </div>
+    ) : (
+        <button
+            className="bg-white font-bold text-slate-700 px-3 py-1.5 md:px-5 md:py-2 mr-4 md:mr-6 lg:mr-10 rounded border-none cursor-pointer flex items-center justify-center gap-1 hover:bg-gray-100 transition-colors text-xs md:text-sm"
+            onClick={() => navigate('/login')}
+        >
+            <i className="pi pi-sign-in"></i>
+            <span>Login</span>
+        </button>
     );
 
     return (
-        <header className="card h-[12vh] bg-slate-700 content-center">
-            <Menubar 
-                model={isAuthenticated ? items : [items[0]]} 
-                start={start} 
-                end={end} 
-            />
+        <header className="card bg-slate-700 flex items-center px-2 md:px-4 py-3 min-h-[64px]">
+            <div className="flex-1">
+                <Menubar 
+                    model={items} 
+                    start={start} 
+                />
+            </div>
+            {userActions}
         </header>
     );
 }
