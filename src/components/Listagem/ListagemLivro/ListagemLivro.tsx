@@ -82,6 +82,10 @@ function ListagemLivro(): JSX.Element {
                 </div>
             </div>
 
+            <div className="flex justify-center mb-4 px-4">
+                <input type="text" name="busca-livro" id="busca-livro" placeholder="Buscar livro" className="w-full max-w-6xl mx-auto p-3 md:p-2 md:mb-4 border-b-2 border-slate-700 rounded-sm bg-white" />
+            </div>
+
             {/* Tabela */}
             <div className="overflow-auto rounded-lg shadow-md max-w-[100rem] mx-auto bg-white mb-4">
                 <table className="w-full min-w-[50rem] border-collapse bg-white">
@@ -123,6 +127,12 @@ function ListagemLivro(): JSX.Element {
                                     <td className="p-3 text-gray-700">{livro.valor_aquisicao}</td>
                                     <td className="p-3 text-gray-700">
                                         <div className="flex gap-2">
+                                            <button
+                                                onClick={() => navigate(`/livro/detalhes/${livro.id_livro}`)}
+                                                className="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded shadow-sm transition-colors text-sm font-medium"
+                                            >
+                                                Detalhes
+                                            </button>
                                             <button
                                                 onClick={() => navigate(`/atualizar/livro/${livro.id_livro}`)}
                                                 className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm transition-colors text-sm font-medium"
@@ -181,11 +191,10 @@ function ListagemLivro(): JSX.Element {
                             <button
                                 key={pagina}
                                 onClick={() => setPaginaAtual(pagina as number)}
-                                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                                    paginaAtual === pagina
+                                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${paginaAtual === pagina
                                         ? "bg-slate-700 text-white shadow"
                                         : "text-slate-700 hover:bg-slate-200"
-                                }`}
+                                    }`}
                             >
                                 {pagina}
                             </button>

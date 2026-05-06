@@ -83,6 +83,10 @@ function ListagemAluno(): JSX.Element {
                 </div>
             </div>
 
+            <div className="flex justify-center mb-4 px-4">
+                <input type="text" name="busca-aluno" id="busca-aluno" placeholder="Buscar aluno" className="w-full max-w-6xl mx-auto p-3 md:p-2 md:mb-4 border-b-2 border-slate-700 rounded-sm bg-white" />
+            </div>
+
             {/* Tabela */}
             <div className="overflow-auto rounded-lg shadow-md max-w-[100rem] mx-auto bg-white mb-4">
                 <table className="w-full min-w-[50rem] border-collapse bg-white">
@@ -118,6 +122,12 @@ function ListagemAluno(): JSX.Element {
                                     <td className="p-3 text-gray-700">{aluno.celular ? Utilitario.formatarTelefone(aluno.celular) : "-"}</td>
                                     <td className="p-3 text-gray-700">
                                         <div className="flex gap-2">
+                                            <button
+                                                onClick={() => navigate(`/aluno/detalhes/${aluno.id_aluno}`)}
+                                                className="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded shadow-sm transition-colors text-sm font-medium"
+                                            >
+                                                Detalhes
+                                            </button>
                                             <button
                                                 onClick={() => navigate(`/atualizar/aluno/${aluno.id_aluno}`)}
                                                 className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm transition-colors text-sm font-medium"
