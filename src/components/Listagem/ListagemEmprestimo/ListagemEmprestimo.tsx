@@ -64,41 +64,52 @@ function ListagemEmprestimo(): JSX.Element {
     };
 
     return (
-        <main className="bg-gray-200 pb-6">
+        <main className="bg-gray-200 pb-6 min-h-screen">
             {/* Cabeçalho */}
-            <div className="max-w-[100rem] mx-auto grid grid-cols-3 items-end pt-[1.5rem] px-4 mb-4">
-                <div /> {/* Spacer para centralizar o título */}
-                <div className="text-center">
-                    <h1 className="text-[3rem]">Empréstimos</h1>
-                    <p className="text-[1.75rem] text-gray-600">Lista de empréstimos</p>
+            <div className="max-w-[100rem] mx-auto grid grid-cols-1 sm:grid-cols-3 items-end pt-[1.5rem] px-4 mb-4 gap-4 sm:gap-0">
+                <div className="sm:hidden text-center">
+                    <h1 className="text-[2rem] sm:text-[3rem]">Empréstimos</h1>
+                    <p className="text-[1.25rem] sm:text-[1.75rem] text-gray-600">Lista de empréstimos</p>
                 </div>
-                <div className="flex justify-end">
+                <div /> {/* Spacer para centralizar o título */}
+                <div className="text-center hidden sm:block">
+                    <h1 className="text-[2rem] sm:text-[3rem]">Empréstimos</h1>
+                    <p className="text-[1.25rem] sm:text-[1.75rem] text-gray-600">Lista de empréstimos</p>
+                </div>
+                <div className="flex justify-center sm:justify-end">
                     <button
                         onClick={() => navigate("/cadastro/emprestimo")}
-                        className="bg-slate-700 hover:bg-slate-800 text-white px-8 py-3 rounded-lg shadow-lg transition-all flex items-center gap-2 font-semibold text-lg mb-2"
+                        className="bg-slate-700 hover:bg-slate-800 text-white px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-semibold text-base sm:text-lg mb-2 w-full sm:w-auto min-h-[48px]"
                     >
                         <i className="pi pi-plus-circle"></i>
-                        Novo Empréstimo
+                        <span className="hidden xs:inline">Novo Empréstimo</span>
+                        <span className="xs:hidden">Novo</span>
                     </button>
                 </div>
             </div>
 
             <div className="flex justify-center mb-4 px-4">
-                <input type="text" name="busca-emprestimo" id="busca-emprestimo" placeholder="Buscar empréstimo" className="w-full max-w-6xl mx-auto p-3 md:p-2 md:mb-4 border-b-2 border-slate-700 rounded-sm bg-white" />
+                <input 
+                    type="text" 
+                    name="busca-emprestimo" 
+                    id="busca-emprestimo" 
+                    placeholder="Buscar empréstimo" 
+                    className="w-full max-w-6xl mx-auto p-3 sm:p-2 md:mb-4 border-b-2 border-slate-700 rounded-sm bg-white min-h-[48px] text-base"
+                />
             </div>
 
-            {/* Tabela */}
-            <div className="overflow-auto rounded-lg shadow-md max-w-[100rem] mx-auto bg-white mb-4">
-                <table className="w-full min-w-[50rem] border-collapse bg-white">
-                    <thead className="bg-slate-700 sticky top-0">
+            {/* Tabela Responsiva */}
+            <div className="table-responsive max-w-[100rem] mx-auto bg-white mb-4 shadow-md">
+                <table className="w-full border-collapse bg-white">
+                    <thead className="bg-slate-700 sticky top-0 z-10">
                         <tr>
-                            <th className="bg-slate-700 text-white p-3 text-left font-semibold">Aluno</th>
-                            <th className="bg-slate-700 text-white p-3 text-left font-semibold">Livro</th>
-                            <th className="bg-slate-700 text-white p-3 text-left font-semibold">Data de Empréstimo</th>
-                            <th className="bg-slate-700 text-white p-3 text-left font-semibold">Data de Devolução</th>
-                            <th className="bg-slate-700 text-white p-3 text-left font-semibold">Status</th>
-                            <th className="bg-slate-700 text-white p-3 text-left font-semibold">Valor Livro</th>
-                            <th className="bg-slate-700 text-white p-3 text-left font-semibold">Ações</th>
+                            <th className="bg-slate-700 text-white p-2 sm:p-3 text-left font-semibold text-xs sm:text-sm">Aluno</th>
+                            <th className="bg-slate-700 text-white p-2 sm:p-3 text-left font-semibold text-xs sm:text-sm hide-on-mobile">Livro</th>
+                            <th className="bg-slate-700 text-white p-2 sm:p-3 text-left font-semibold text-xs sm:text-sm hide-on-tablet">Data Empréstimo</th>
+                            <th className="bg-slate-700 text-white p-2 sm:p-3 text-left font-semibold text-xs sm:text-sm hide-on-tablet">Devolução</th>
+                            <th className="bg-slate-700 text-white p-2 sm:p-3 text-left font-semibold text-xs sm:text-sm">Status</th>
+                            <th className="bg-slate-700 text-white p-2 sm:p-3 text-left font-semibold text-xs sm:text-sm hide-on-mobile">Valor</th>
+                            <th className="bg-slate-700 text-white p-2 sm:p-3 text-left font-semibold text-xs sm:text-sm">Ações</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -114,31 +125,37 @@ function ListagemEmprestimo(): JSX.Element {
                                     key={emprestimo.id_emprestimo}
                                     className="hover:bg-blue-50 transition-colors duration-200 even:bg-gray-50"
                                 >
-                                    <td className="p-3 text-gray-700 font-medium">{emprestimo.aluno.nome}</td>
-                                    <td className="p-3 text-gray-700">{emprestimo.livro.titulo}</td>
-                                    <td className="p-3 text-gray-700">{new Date(emprestimo.data_emprestimo).toLocaleDateString()}</td>
-                                    <td className="p-3 text-gray-700">{emprestimo.data_devolucao ? new Date(emprestimo.data_devolucao).toLocaleDateString() : "-"}</td>
-                                    <td className="p-3 text-gray-700">{emprestimo.status_emprestimo}</td>
-                                    <td className="p-3 text-gray-700">{emprestimo.livro.valor_aquisicao}</td>
-                                    <td className="p-3 text-gray-700">
-                                        <div className="flex gap-2">
+                                    <td className="p-2 sm:p-3 text-gray-700 font-medium text-xs sm:text-sm max-w-[120px] sm:max-w-none truncate">{emprestimo.aluno.nome}</td>
+                                    <td className="p-2 sm:p-3 text-gray-700 text-xs sm:text-sm hide-on-mobile max-w-[150px] sm:max-w-none truncate">{emprestimo.livro.titulo}</td>
+                                    <td className="p-2 sm:p-3 text-gray-700 text-xs sm:text-sm hide-on-tablet">{new Date(emprestimo.data_emprestimo).toLocaleDateString()}</td>
+                                    <td className="p-2 sm:p-3 text-gray-700 text-xs sm:text-sm hide-on-tablet">{emprestimo.data_devolucao ? new Date(emprestimo.data_devolucao).toLocaleDateString() : "-"}</td>
+                                    <td className="p-2 sm:p-3 text-gray-700 text-xs sm:text-sm">{emprestimo.status_emprestimo}</td>
+                                    <td className="p-2 sm:p-3 text-gray-700 text-xs sm:text-sm hide-on-mobile">{emprestimo.livro.valor_aquisicao}</td>
+                                    <td className="p-2 sm:p-3 text-gray-700">
+                                        <div className="flex flex-wrap gap-1 sm:gap-2">
                                             <button
                                                 onClick={() => navigate(`/emprestimo/detalhes/${emprestimo.id_emprestimo}`)}
-                                                className="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded shadow-sm transition-colors text-sm font-medium"
+                                                className="bg-sky-500 hover:bg-sky-600 text-white px-2 sm:px-3 py-1.5 sm:py-1 rounded shadow-sm transition-colors text-xs sm:text-sm font-medium min-h-[44px] sm:min-h-auto"
+                                                title="Detalhes"
                                             >
-                                                Detalhes
+                                                <i className="pi pi-eye"></i>
+                                                <span className="hidden sm:inline ml-1">Detalhes</span>
                                             </button>
                                             <button
                                                 onClick={() => navigate(`/atualizar/emprestimo/${emprestimo.id_emprestimo}`)}
-                                                className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm transition-colors text-sm font-medium"
+                                                className="bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-3 py-1.5 sm:py-1 rounded shadow-sm transition-colors text-xs sm:text-sm font-medium min-h-[44px] sm:min-h-auto"
+                                                title="Atualizar"
                                             >
-                                                Atualizar
+                                                <i className="pi pi-pencil"></i>
+                                                <span className="hidden sm:inline ml-1">Atualizar</span>
                                             </button>
                                             <button
                                                 onClick={() => handleRemoverEmprestimo(emprestimo.id_emprestimo!, emprestimo.livro.titulo!)}
-                                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow-sm transition-colors text-sm font-medium"
+                                                className="bg-red-500 hover:bg-red-600 text-white px-2 sm:px-3 py-1.5 sm:py-1 rounded shadow-sm transition-colors text-xs sm:text-sm font-medium min-h-[44px] sm:min-h-auto"
+                                                title="Remover"
                                             >
-                                                Remover
+                                                <i className="pi pi-trash"></i>
+                                                <span className="hidden sm:inline ml-1">Remover</span>
                                             </button>
                                         </div>
                                     </td>
@@ -152,22 +169,22 @@ function ListagemEmprestimo(): JSX.Element {
             {/* Paginação */}
             <div className="max-w-[100rem] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
                 {/* Contador de registros */}
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-xs sm:text-sm text-center sm:text-left">
                     Exibindo{" "}
                     <span className="font-semibold text-slate-700">
                         {emprestimos.length === 0 ? 0 : inicio + 1}–{Math.min(inicio + REGISTROS_POR_PAGINA, emprestimos.length)}
                     </span>{" "}
-                    de <span className="font-semibold text-slate-700">{emprestimos.length}</span> emprestimos
+                    de <span className="font-semibold text-slate-700">{emprestimos.length}</span> empréstimos
                 </p>
 
                 {/* Controles de navegação */}
-                <nav className="flex items-center gap-1" aria-label="Paginação">
+                <nav className="flex items-center gap-1 flex-wrap justify-center" aria-label="Paginação">
                     {/* Primeira página */}
                     <button
                         onClick={() => setPaginaAtual(1)}
                         disabled={paginaAtual === 1}
                         title="Primeira página"
-                        className="px-2 py-1.5 rounded text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors"
+                        className="px-2 py-1.5 rounded text-xs sm:text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors min-h-[44px] sm:min-h-auto"
                     >«</button>
 
                     {/* Página anterior */}
@@ -175,18 +192,18 @@ function ListagemEmprestimo(): JSX.Element {
                         onClick={() => setPaginaAtual(p => p - 1)}
                         disabled={paginaAtual === 1}
                         title="Página anterior"
-                        className="px-3 py-1.5 rounded text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors"
+                        className="px-3 py-1.5 rounded text-xs sm:text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors min-h-[44px] sm:min-h-auto"
                     >‹</button>
 
                     {/* Números de página */}
                     {gerarPaginas().map((pagina, idx) =>
                         pagina === "..." ? (
-                            <span key={`ellipsis-${idx}`} className="px-2 py-1.5 text-gray-400 select-none">…</span>
+                            <span key={`ellipsis-${idx}`} className="px-2 py-1.5 text-gray-400 select-none min-h-[44px] sm:min-h-auto flex items-center">…</span>
                         ) : (
                             <button
                                 key={pagina}
                                 onClick={() => setPaginaAtual(pagina as number)}
-                                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                                className={`px-3 py-1.5 rounded text-xs sm:text-sm font-medium transition-colors min-h-[44px] sm:min-h-auto ${
                                     paginaAtual === pagina
                                         ? "bg-slate-700 text-white shadow"
                                         : "text-slate-700 hover:bg-slate-200"
@@ -202,7 +219,7 @@ function ListagemEmprestimo(): JSX.Element {
                         onClick={() => setPaginaAtual(p => p + 1)}
                         disabled={paginaAtual === totalPaginas}
                         title="Próxima página"
-                        className="px-3 py-1.5 rounded text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors"
+                        className="px-3 py-1.5 rounded text-xs sm:text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors min-h-[44px] sm:min-h-auto"
                     >›</button>
 
                     {/* Última página */}
@@ -210,7 +227,7 @@ function ListagemEmprestimo(): JSX.Element {
                         onClick={() => setPaginaAtual(totalPaginas)}
                         disabled={paginaAtual === totalPaginas}
                         title="Última página"
-                        className="px-2 py-1.5 rounded text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors"
+                        className="px-2 py-1.5 rounded text-xs sm:text-sm text-slate-700 disabled:opacity-40 hover:bg-slate-200 transition-colors min-h-[44px] sm:min-h-auto"
                     >»</button>
                 </nav>
             </div>

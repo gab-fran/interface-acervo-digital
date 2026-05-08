@@ -1,2 +1,125 @@
 @import "tailwindcss";
-
+
+/* ========================================
+   ESTILOS GLOBAIS DE RESPONSIVIDADE
+   ======================================== */
+
+/* Evitar overflow horizontal em toda a aplicação */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Melhorar acessibilidade de toque em dispositivos móveis */
+@media (max-width: 768px) {
+  /* Aumentar áreas clicáveis para toque */
+  button, a, input[type="button"], input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Ajustar tamanhos de fonte para melhor leitura */
+  h1 { font-size: 1.75rem !important; }
+  h2 { font-size: 1.5rem !important; }
+  h3 { font-size: 1.25rem !important; }
+  p { font-size: 0.95rem; }
+}
+
+/* Telas muito pequenas (iPhone SE, etc) */
+@media (max-width: 375px) {
+  h1 { font-size: 1.5rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  .text-\[3rem\] { font-size: 1.75rem !important; }
+  .text-\[1\.75rem\] { font-size: 1.125rem !important; }
+}
+
+/* ========================================
+   TABELAS RESPONSIVAS
+   ======================================== */
+
+/* Container de tabela com scroll horizontal suave */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.5rem;
+}
+
+.table-responsive table {
+  min-width: 100%;
+  white-space: nowrap;
+}
+
+/* Em mobile, esconder colunas menos importantes */
+@media (max-width: 1024px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-on-tablet {
+    display: none;
+  }
+}
+
+/* ========================================
+   UTILITÁRIOS RESPONSIVOS
+   ======================================== */
+
+/* Padding responsivo para containers principais */
+.container-responsive {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Gap responsivo para grids e flexbox */
+.gap-responsive {
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .gap-responsive {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gap-responsive {
+    gap: 1.5rem;
+  }
+}
+
+/* ========================================
+   ANIMAÇÕES SUAVES
+   ======================================== */
+
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Remover transição de elementos que não devem animar */
+.no-transition {
+  transition: none !important;
+}
+
