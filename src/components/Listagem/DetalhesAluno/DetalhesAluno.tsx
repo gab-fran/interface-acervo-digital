@@ -82,85 +82,95 @@ function DetalhesAluno({ id_aluno }: DetalhesAlunoProps): JSX.Element {
 
     // Renderização dos detalhes do aluno
     return (
-        <main className="bg-gray-200 flex-1 py-6 sm:py-10 px-4 overflow-y-auto">
-            <Card title={`${aluno.nome} ${aluno.sobrenome}`} className="shadow-lg animate-fade-in transition-all duration-300 w-full max-w-4xl p-4 sm:p-6 md:p-8 mx-auto font-bold text-xl">
-                <div className="flex flex-col gap-2">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-                        <span className="text-gray-500 font-medium tracking-tight">Registro Acadêmico (RA)</span>
-                        <Tag value={aluno.ra} severity="info" className="px-3 py-1" />
+        <main className="bg-gray-200 flex-1 py-4 sm:py-10 px-2 sm:px-4 overflow-y-auto">
+            <Card 
+                title={
+                    <div className="flex flex-col gap-1">
+                        <span className="text-2xl md:text-3xl font-bold text-slate-800">{aluno.nome} {aluno.sobrenome}</span>
+                        <span className="text-sm font-medium text-gray-500 uppercase tracking-widest">Detalhes do Aluno</span>
                     </div>
-
-                    <Divider />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
+                } 
+                className="shadow-xl animate-fade-in transition-all duration-300 w-full max-w-4xl px-2 sm:px-6 py-4 mx-auto rounded-xl overflow-hidden"
+            >
+                <div className="flex flex-col gap-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-blue-50/50 p-4 rounded-lg border border-blue-100">
+                        <span className="text-slate-600 font-semibold tracking-tight">Registro Acadêmico (RA)</span>
+                        <Tag value={aluno.ra} severity="info" className="px-4 py-2 text-base font-bold shadow-sm" />
+                    </div>
+ 
+                    <Divider className="!my-2" />
+ 
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-1">
                         {/* Seção de Informações Pessoais */}
                         <div className="flex flex-col gap-4">
-                            <h3 className="text-lg font-semibold text-primary-700 flex items-center gap-2">
-                                <i className="pi pi-user text-blue-500"></i> Informações Pessoais
+                            <h3 className="text-xl font-bold text-slate-700 flex items-center gap-2 border-b-2 border-blue-500 pb-2 w-fit">
+                                <i className="pi pi-user text-blue-500 text-xl"></i> Informações Pessoais
                             </h3>
-                            <div className="flex flex-col gap-3 ml-1 border-l-2 border-blue-50 relative pl-4">
+                            <div className="flex flex-col gap-4 pl-1">
                                 <div className="flex flex-col">
-                                    <span className="text-xs uppercase text-gray-400 font-bold tracking-wider">Data de Nascimento</span>
-                                    <span className="text-gray-700 font-medium">{new Date(aluno.data_nascimento).toLocaleDateString('pt-BR')}</span>
+                                    <span className="text-xs uppercase text-gray-400 font-black tracking-widest mb-1">Data de Nascimento</span>
+                                    <span className="text-slate-700 font-bold text-lg">{new Date(aluno.data_nascimento).toLocaleDateString('pt-BR')}</span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs uppercase text-gray-400 font-bold tracking-wider">E-mail Acadêmico</span>
-                                    <span className="text-gray-700 font-medium break-all">{aluno.email}</span>
+                                    <span className="text-xs uppercase text-gray-400 font-black tracking-widest mb-1">E-mail Acadêmico</span>
+                                    <span className="text-slate-700 font-bold text-lg break-all">{aluno.email}</span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs uppercase text-gray-400 font-bold tracking-wider">Status do Aluno</span>
+                                    <span className="text-xs uppercase text-gray-400 font-black tracking-widest mb-1">Status do Aluno</span>
                                     <Tag
                                         value={aluno.status_aluno ? "Ativo" : "Inativo"}
                                         severity={aluno.status_aluno ? "success" : "danger"}
-                                        className="w-fit mt-1 rounded-sm"
+                                        className="w-fit mt-1 px-4 py-1.5 rounded-full text-sm font-bold shadow-sm"
                                     />
                                 </div>
                             </div>
                         </div>
-
+ 
                         {/* Seção de Contato e Localização */}
                         <div className="flex flex-col gap-4">
-                            <h3 className="text-lg font-semibold text-primary-700 flex items-center gap-2">
-                                <i className="pi pi-map-marker text-orange-500"></i> Contato e Localização
+                            <h3 className="text-xl font-bold text-slate-700 flex items-center gap-2 border-b-2 border-orange-500 pb-2 w-fit">
+                                <i className="pi pi-map-marker text-orange-500 text-xl"></i> Contato e Localização
                             </h3>
-                            <div className="flex flex-col gap-3 ml-1 border-l-2 border-orange-50 relative pl-4">
+                            <div className="flex flex-col gap-4 pl-1">
                                 <div className="flex flex-col">
-                                    <span className="text-xs uppercase text-gray-400 font-bold tracking-wider">Celular / Telefone</span>
-                                    <span className="text-gray-700 font-medium">
+                                    <span className="text-xs uppercase text-gray-400 font-black tracking-widest mb-1">Celular / Telefone</span>
+                                    <span className="text-slate-700 font-bold text-lg">
                                         {aluno.celular ? aluno.celular : "Não informado"}
                                     </span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs uppercase text-gray-400 font-bold tracking-wider">Endereço Residencial</span>
-                                    <span className="text-gray-700 font-medium leading-relaxed">{aluno.endereco}</span>
+                                    <span className="text-xs uppercase text-gray-400 font-black tracking-widest mb-1">Endereço Residencial</span>
+                                    <span className="text-slate-700 font-bold text-lg leading-relaxed">{aluno.endereco}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
+ 
                 <style>{`
                 .animate-fade-in {
                     animation: fadeIn 0.5s ease-out;
                 }
                 @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
+                    from { opacity: 0; transform: translateY(20px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
             `}</style>
             </Card>
-            <div className="w-full max-w-4xl mx-auto mt-6 sm:mt-8">
+            <div className="w-full max-w-4xl mx-auto mt-8 flex flex-col gap-3 px-2 sm:px-0">
                 <button
-                    className="w-full bg-slate-700 hover:bg-slate-500 text-white px-4 py-3 md:mb-2 rounded-md font-bold transition-all shadow-md active:scale-95"
+                    className="w-full bg-slate-700 hover:bg-slate-800 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 text-lg"
                     onClick={() => navigate(`/atualizar/aluno/${aluno.id_aluno}`)}
                 >
+                    <i className="pi pi-pencil"></i>
                     Editar Aluno
                 </button>
                 <button
-                    className="w-full bg-white text-black hover:bg-slate-500 px-4 py-3 rounded-md font-bold transition-all shadow-md active:scale-95"
-                    onClick={() => navigate(`/lista/alunos`)}
+                    className="w-full bg-white text-slate-700 hover:bg-gray-50 border-2 border-slate-700 px-6 py-4 rounded-xl font-bold transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-lg"
+                    onClick={() => navigate(`/alunos`)}
                 >
-                    Voltar
+                    <i className="pi pi-arrow-left"></i>
+                    Voltar para Listagem
                 </button>
             </div>
         </main>

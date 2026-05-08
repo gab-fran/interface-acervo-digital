@@ -1,6 +1,6 @@
 import { useState, type JSX } from "react";
 import { Menubar } from 'primereact/menubar';
-import type { MenuItem } from 'primereact/menuitem';
+import type { MenuItem, MenuItemOptions } from 'primereact/menuitem';
 import { Avatar } from 'primereact/avatar';
 import { useNavigate } from 'react-router-dom';
 import AuthRequests from "../../fetch/AuthRequests";
@@ -19,7 +19,7 @@ function Navegacao(): JSX.Element {
         const token = localStorage.getItem('token');
         return !!(isAuth && token && AuthRequests.checkTokenExpiry());
     });
-    
+
     const navigate = useNavigate();
 
     const logout = () => {
@@ -41,23 +41,55 @@ function Navegacao(): JSX.Element {
         ...(isAuthenticated ? [
             {
                 label: 'Alunos',
-                icon: 'pi pi-star',
+                icon: 'pi pi-users',
                 className: 'mx-2 md:mx-4 text-white text-sm md:text-base lg:text-lg',
                 url: "/alunos"
             },
             {
                 label: 'Livros',
-                icon: 'pi pi-star',
+                icon: 'pi pi-book',
                 className: 'mx-2 md:mx-4 text-white text-sm md:text-base lg:text-lg',
                 url: "/livros"
             },
             {
                 label: 'Empréstimos',
-                icon: 'pi pi-star',
+                icon: 'pi pi-calendar-clock',
                 className: 'mx-2 md:mx-4 text-white text-sm md:text-base lg:text-lg',
-                url: "/emprestimos"   
+                url: "/emprestimos"
+            },
+            // Itens extras para mobile (ocultos em desktop)
+            {
+                separator: true,
+                className: 'md:hidden'
+            },
+            {
+                label: username,
+                icon: 'pi pi-user',
+                className: 'md:hidden text-white',
+                template: (item: MenuItem, options: MenuItemOptions) => (
+                    <div className="flex items-center gap-3 p-3 md:hidden">
+                        <Avatar image={avatarImage} shape="circle" />
+                        <div className="flex flex-col">
+                            <span className="text-white font-bold">{username}</span>
+                            <span className="text-white text-xs opacity-60">{email}</span>
+                        </div>
+                    </div>
+                )
+            },
+            {
+                label: 'Sair',
+                icon: 'pi pi-sign-out',
+                className: 'md:hidden text-red-400 font-bold',
+                command: logout
             }
-        ] : [])
+        ] : [
+            {
+                label: 'Login',
+                icon: 'pi pi-sign-in',
+                className: 'md:hidden text-white font-bold',
+                url: '/login'
+            }
+        ])
     ];
 
     const start = (
@@ -68,44 +100,99 @@ function Navegacao(): JSX.Element {
         />
     );
 
-    const userActions = isAuthenticated ? (
-        <div className="flex items-center justify-end mr-4 md:mr-6 lg:mr-10 gap-2 md:gap-4">
-            <div className="flex flex-col pr-2 md:pr-3 hidden sm:flex">
-                <p className="text-white font-semibold m-0 text-sm md:text-base">{username}</p>
-                <p className="text-white text-xs md:text-sm m-0">{email}</p>
-            </div>
-            <Avatar
-                image={avatarImage}
-                shape="circle"
-                className="!w-8 !h-8 md:!w-10 md:!h-10"
-            />
-            <button
-                className="bg-white ml-2 md:ml-4 text-slate-700 px-3 py-1.5 md:px-5 md:py-2 rounded border-none cursor-pointer flex items-center justify-center gap-1 hover:bg-gray-100 transition-colors text-xs md:text-sm"
-                onClick={logout}
-            >
-                <i className="pi pi-sign-out"></i>
-                <span>Sair</span>
-            </button>
+    const userActions = (
+        <div className="hidden md:flex items-center justify-end gap-2 md:gap-4">
+            {isAuthenticated ? (
+                <>
+                    <div className="flex flex-col pr-2 md:pr-3">
+                        <p className="text-white font-semibold m-0 text-sm md:text-base leading-tight">{username}</p>
+                        <p className="text-white text-[10px] md:text-xs m-0 opacity-80">{email}</p>
+                    </div>
+                    <Avatar
+                        image={avatarImage}
+                        shape="circle"
+                        className="!w-8 !h-8 md:!w-10 md:!h-10"
+                    />
+                    <button
+                        className="bg-slate-600/50 ml-2 md:ml-4 text-white px-2 py-1 md:px-4 md:py-2 rounded-lg border border-white/10 cursor-pointer flex items-center justify-center gap-1 hover:bg-red-600/80 transition-all active:scale-95 text-xs md:text-sm font-semibold shadow-sm"
+                        onClick={logout}
+                    >
+                        <i className="pi pi-sign-out"></i>
+                        <span>Sair</span>
+                    </button>
+                </>
+            ) : (
+                <button
+                    className="bg-blue-600 font-bold text-white px-3 py-1.5 md:px-5 md:py-2 rounded-lg border-none cursor-pointer flex items-center justify-center gap-1 hover:bg-blue-500 shadow-md transition-all active:scale-95 text-xs md:text-sm"
+                    onClick={() => navigate('/login')}
+                >
+                    <i className="pi pi-sign-in"></i>
+                    <span>Login</span>
+                </button>
+            )}
         </div>
-    ) : (
-        <button
-            className="bg-white font-bold text-slate-700 px-3 py-1.5 md:px-5 md:py-2 mr-4 md:mr-6 lg:mr-10 rounded border-none cursor-pointer flex items-center justify-center gap-1 hover:bg-gray-100 transition-colors text-xs md:text-sm"
-            onClick={() => navigate('/login')}
-        >
-            <i className="pi pi-sign-in"></i>
-            <span>Login</span>
-        </button>
     );
 
     return (
-        <header className="card bg-slate-700 flex items-center px-2 md:px-4 py-3 min-h-[64px]">
-            <div className="flex-1">
-                <Menubar 
-                    model={items} 
-                    start={start} 
+        <header className="bg-slate-700 shadow-lg sticky top-0 z-50 px-2">
+            <div className="max-w-[100rem] mx-auto">
+                <Menubar
+                    model={items}
+                    start={start}
+                    end={userActions}
+                    // A classe abaixo garante que o PrimeReact aplique o estilo de menu mobile corretamente
+                    className="!bg-transparent !border-none !py-2"
                 />
             </div>
-            {userActions}
+
+            <style>{`
+                /* Garante que o ícone de três risquinhos seja branco e visível */
+                .p-menubar-button {
+                    color: white !important;
+                    background: rgba(255, 255, 255, 0.1) !important;
+                }
+
+                /* Estilo para os itens do menu (Alunos, Livros, etc) */
+                .p-menuitem-link {
+                    padding: 0.5rem 1rem !important;
+                    border-radius: 8px !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .p-menuitem-link:hover, .p-menuitem-content:hover {
+                    background: rgba(255, 255, 255, 0.05) !important;
+                }
+
+                .p-menuitem-text, .p-menuitem-icon {
+                    color: #ffffff !important;
+                    font-weight: 500 !important;
+                }
+
+                .p-menuitem-link:hover .p-menuitem-text, 
+                .p-menuitem-link:hover .p-menuitem-icon {
+                    color: #ffffff !important;
+                    opacity: 0.8 !important;
+                }
+                
+                /* Esconde os itens de menu em telas menores que o breakpoint */
+                @media screen and (max-width: 960px) {
+                    .p-menubar-root-list {
+                        display: none;
+                    }
+                    .p-menubar-mobile-active .p-menubar-root-list {
+                        display: flex !important;
+                        flex-direction: column;
+                        background: #334155 !important;
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        width: 100%;
+                        padding: 1rem;
+                        z-index: 1000;
+                        border-bottom: 4px solid #1e293b;
+                    }
+                }
+            `}</style>
         </header>
     );
 }
