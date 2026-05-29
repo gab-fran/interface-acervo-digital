@@ -1,6 +1,6 @@
 import { useState, type JSX } from "react";
 import { Menubar } from 'primereact/menubar';
-import type { MenuItem, MenuItemOptions } from 'primereact/menuitem';
+import type { MenuItem } from 'primereact/menuitem';
 import { Avatar } from 'primereact/avatar';
 import { useNavigate } from 'react-router-dom';
 import AuthRequests from "../../fetch/AuthRequests";
@@ -66,7 +66,7 @@ function Navegacao(): JSX.Element {
                 label: username,
                 icon: 'pi pi-user',
                 className: 'md:hidden text-white',
-                template: (item: MenuItem, options: MenuItemOptions) => (
+                template: () => (
                     <div className="flex items-center gap-3 p-3 md:hidden">
                         <Avatar image={avatarImage} shape="circle" />
                         <div className="flex flex-col">
@@ -114,7 +114,7 @@ function Navegacao(): JSX.Element {
                         className="!w-8 !h-8 md:!w-10 md:!h-10"
                     />
                     <button
-                        className="bg-slate-600/50 ml-2 md:ml-4 text-white px-2 py-1 md:px-4 md:py-2 rounded-lg border border-white/10 cursor-pointer flex items-center justify-center gap-1 hover:bg-red-600/80 transition-all active:scale-95 text-xs md:text-sm font-semibold shadow-sm"
+                        className="bg-slate-600/50 ml-2 md:ml-4 text-white px-2 py-1 md:px-4 md:py-2 rounded-lg border border-white/10 cursor-pointer flex items-center justify-center gap-2 hover:bg-red-600/80 transition-all active:scale-95 text-xs md:text-sm font-semibold shadow-sm"
                         onClick={logout}
                     >
                         <i className="pi pi-sign-out"></i>
@@ -123,7 +123,7 @@ function Navegacao(): JSX.Element {
                 </>
             ) : (
                 <button
-                    className="bg-blue-600 font-bold text-white px-3 py-1.5 md:px-5 md:py-2 rounded-lg border-none cursor-pointer flex items-center justify-center gap-1 hover:bg-blue-500 shadow-md transition-all active:scale-95 text-xs md:text-sm"
+                    className="bg-blue-600 font-bold text-white px-3 py-1.5 md:px-5 md:py-2 rounded-lg border-none cursor-pointer flex items-center justify-center gap-2 hover:bg-blue-500 shadow-md transition-all active:scale-95 text-xs md:text-sm"
                     onClick={() => navigate('/login')}
                 >
                     <i className="pi pi-sign-in"></i>
@@ -166,6 +166,10 @@ function Navegacao(): JSX.Element {
                 .p-menuitem-text, .p-menuitem-icon {
                     color: #ffffff !important;
                     font-weight: 500 !important;
+                }
+
+                .p-menuitem-icon {
+                    margin-right: 0.5rem !important;
                 }
 
                 .p-menuitem-link:hover .p-menuitem-text, 

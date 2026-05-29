@@ -6,8 +6,12 @@ import LivroRequests from '../../../fetch/LivroRequests';
 import type EmprestimoDTO from '../../../dto/EmprestimoDTO';
 import type AlunoDTO from '../../../dto/AlunoDTO';
 import type LivroDTO from '../../../dto/LivroDTO';
+import PaginaConteudo from '../../Comuns/PaginaConteudo';
+import CabecalhoPagina from '../../Comuns/CabecalhoPagina';
+import CardConteudo from '../../Comuns/CardConteudo';
+import CampoFormulario from '../../Comuns/CampoFormulario';
+import { ui } from '../../Comuns/styles';
 
-// Retorna a data atual formatada como yyyy-MM-dd (compatível com input type="date")
 function getHojeStr(): string {
     const hoje = new Date();
     const ano = hoje.getFullYear();
@@ -34,7 +38,6 @@ function FormEmprestimo() {
         status_emprestimo_registro: true
     });
 
-    // Busca alunos e livros da API ao montar o componente
     useEffect(() => {
         async function carregarDados() {
             setCarregando(true);
@@ -50,7 +53,6 @@ function FormEmprestimo() {
         carregarDados();
     }, []);
 
-    // Atualiza o state a partir de qualquer input do formulário
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
@@ -65,134 +67,119 @@ function FormEmprestimo() {
         }
     };
 
-    // Envia os dados para a requisição
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // evita o recarregamento da página
+        e.preventDefault();
 
-        // chama o método que irá fazer a requisição à API
         const resposta = await EmprestimoRequests.enviarFormularioEmprestimo(formData);
         if (resposta) {
-            alert("Empréstimo cadastrado com sucesso");
+            alert("Emprestimo cadastrado com sucesso");
             navigate('/emprestimos');
         } else {
-            alert("Erro ao cadastrar empréstimo");
+            alert("Erro ao cadastrar emprestimo");
         }
     };
 
     return (
-        <main className="bg-gray-100 flex-1 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-y-auto">
-            <div className="max-w-3xl mx-auto">
-                <form onSubmit={handleSubmit} className="bg-white shadow-2xl rounded-2xl p-6 sm:p-10 border border-slate-200">
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl text-center font-bold text-slate-800 mb-8 sm:mb-12">
-                        Cadastro de Empréstimo
-                    </h1>
+        <PaginaConteudo formLayout>
+            <CabecalhoPagina
+                titulo="Cadastro de Emprestimo"
+                subtitulo="Vincule aluno, livro e previsao de devolucao"
+            />
 
+            <form onSubmit={handleSubmit}>
+                <CardConteudo asForm>
                     {carregando ? (
-                        <div className="flex justify-center items-center py-16">
-                            <div className="text-slate-500 text-lg font-medium animate-pulse">
+                        <div className="flex flex-col justify-center items-center gap-3 py-16 text-center">
+                            <i className="pi pi-spin pi-spinner text-3xl text-slate-500"></i>
+                            <p className="text-slate-500 text-lg font-medium">
                                 Carregando dados...
-                            </div>
+                            </p>
                         </div>
                     ) : (
-                        <div className="space-y-6 sm:space-y-8">
-                            {/* Linha 1: Aluno e Livro */}
-                            <div className="flex flex-col sm:flex-row gap-6">
-                                <div className="flex-1">
-                                    <label htmlFor="id_aluno" className="block text-sm font-semibold text-slate-700 mb-2">
-                                        Aluno
-                                    </label>
-                                    <select
-                                        name="id_aluno"
-                                        id="id_aluno"
-                                        required
-                                        value={formData.aluno.id_aluno || ''}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-slate-500 focus:outline-none transition-all bg-white text-slate-700"
-                                    >
-                                        <option value="">Selecione um aluno</option>
-                                        {listaAlunos.map(aluno => (
-                                            <option key={aluno.id_aluno} value={aluno.id_aluno}>
-                                                {aluno.nome} {aluno.sobrenome}
-                                                {aluno.ra ? ` — RA: ${aluno.ra}` : ''}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                            <CampoFormulario htmlFor="id_aluno" label="Aluno">
+                                <select
+                                    name="id_aluno"
+                                    id="id_aluno"
+                                    required
+                                    value={formData.aluno.id_aluno || ''}
+                                    onChange={handleChange}
+                                    className={ui.select}
+                                >
+                                    <option value="">Selecione um aluno</option>
+                                    {listaAlunos.map(aluno => (
+                                        <option key={aluno.id_aluno} value={aluno.id_aluno}>
+                                            {aluno.nome} {aluno.sobrenome}
+                                            {aluno.ra ? ` - RA: ${aluno.ra}` : ''}
+                                        </option>
+                                    ))}
+                                </select>
+                            </CampoFormulario>
 
-                                <div className="flex-1">
-                                    <label htmlFor="id_livro" className="block text-sm font-semibold text-slate-700 mb-2">
-                                        Livro
-                                    </label>
-                                    <select
-                                        name="id_livro"
-                                        id="id_livro"
-                                        required
-                                        value={formData.livro.id_livro || ''}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-slate-500 focus:outline-none transition-all bg-white text-slate-700"
-                                    >
-                                        <option value="">Selecione um livro</option>
-                                        {listaLivros.map(livro => (
-                                            <option key={livro.id_livro} value={livro.id_livro}>
-                                                {livro.titulo} — {livro.autor}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
+                            <CampoFormulario htmlFor="id_livro" label="Livro">
+                                <select
+                                    name="id_livro"
+                                    id="id_livro"
+                                    required
+                                    value={formData.livro.id_livro || ''}
+                                    onChange={handleChange}
+                                    className={ui.select}
+                                >
+                                    <option value="">Selecione um livro</option>
+                                    {listaLivros.map(livro => (
+                                        <option key={livro.id_livro} value={livro.id_livro}>
+                                            {livro.titulo} - {livro.autor}
+                                        </option>
+                                    ))}
+                                </select>
+                            </CampoFormulario>
 
-                            {/* Linha 2: Data de Empréstimo e Data de Devolução */}
-                            <div className="flex flex-col sm:flex-row gap-6">
-                                <div className="flex-1">
-                                    <label htmlFor="data_emprestimo" className="block text-sm font-semibold text-slate-700 mb-2">
-                                        Data de Empréstimo
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="data_emprestimo"
-                                        id="data_emprestimo"
-                                        required
-                                        readOnly
-                                        value={hojeStr}
-                                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 text-slate-500 cursor-not-allowed"
-                                    />
-                                </div>
+                            <CampoFormulario htmlFor="data_emprestimo" label="Data de Emprestimo">
+                                <input
+                                    type="date"
+                                    name="data_emprestimo"
+                                    id="data_emprestimo"
+                                    required
+                                    readOnly
+                                    value={hojeStr}
+                                    className={ui.readonlyInput}
+                                />
+                            </CampoFormulario>
 
-                                <div className="flex-1">
-                                    <label htmlFor="data_devolucao" className="block text-sm font-semibold text-slate-700 mb-2">
-                                        Data de Devolução
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="data_devolucao"
-                                        id="data_devolucao"
-                                        min={hojeStr}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-slate-500 focus:outline-none transition-all text-slate-700"
-                                    />
-                                </div>
-                            </div>
+                            <CampoFormulario htmlFor="data_devolucao" label="Data de Devolucao">
+                                <input
+                                    type="date"
+                                    name="data_devolucao"
+                                    id="data_devolucao"
+                                    min={hojeStr}
+                                    onChange={handleChange}
+                                    className={ui.input}
+                                />
+                            </CampoFormulario>
                         </div>
                     )}
 
-                    <div className="mt-10 sm:mt-14 space-y-4">
-                        <input
+                    <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <button
                             type="submit"
-                            value="CADASTRAR EMPRÉSTIMO"
                             disabled={carregando}
-                            className="w-full bg-slate-800 text-white py-4 rounded-xl font-bold text-lg cursor-pointer hover:bg-slate-700 shadow-lg hover:shadow-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-                        />
+                            className={ui.primaryButton}
+                        >
+                            <i className="pi pi-check-circle"></i>
+                            Cadastrar Emprestimo
+                        </button>
                         <button
                             type="button"
                             onClick={() => navigate('/emprestimos')}
-                            className="w-full bg-white border-2 border-slate-300 text-slate-600 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all active:scale-[0.98]"
+                            className={ui.secondaryButton}
                         >
-                            VOLTAR PARA LISTAGEM
+                            <i className="pi pi-arrow-left"></i>
+                            Voltar para Listagem
                         </button>
                     </div>
-                </form>
-            </div>
-        </main>
+                </CardConteudo>
+            </form>
+        </PaginaConteudo>
     );
 }
 

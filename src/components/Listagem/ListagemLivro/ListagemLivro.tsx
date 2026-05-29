@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type LivroDTO from "../../../dto/LivroDTO";
 import LivroRequests from "../../../fetch/LivroRequests";
+import { ui } from "../../Comuns/styles";
 
 const REGISTROS_POR_PAGINA = 10;
 
@@ -63,7 +64,7 @@ function ListagemLivro(): JSX.Element {
     };
 
     return (
-        <main className="bg-gray-200 pb-6">
+        <main className="bg-gray-200 flex-1 py-6 px-3 sm:px-4 overflow-x-hidden">
             {/* Cabeçalho */}
             <div className="max-w-[100rem] mx-auto flex flex-col md:flex-row items-center md:items-end justify-between pt-6 px-4 mb-6 gap-4">
                 <div className="hidden md:block w-1/4" />
@@ -74,7 +75,7 @@ function ListagemLivro(): JSX.Element {
                 <div className="w-full md:w-auto flex justify-center md:justify-end">
                     <button
                         onClick={() => navigate("/cadastro/livro")}
-                        className="w-full md:w-auto bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-semibold text-base md:text-lg mb-2"
+                        className={ui.headerActionButton}
                     >
                         <i className="pi pi-plus-circle"></i>
                         Novo Livro
@@ -95,8 +96,8 @@ function ListagemLivro(): JSX.Element {
                 </div>
             </div>
 
-            <div className="overflow-auto rounded-lg shadow-md max-w-[100rem] mx-auto bg-white mb-4">
-                <table className="w-full min-w-full md:min-w-[50rem] border-collapse bg-white">
+            <div className={ui.tableWrapper}>
+                <table className={ui.table}>
                     <thead className="bg-slate-700 sticky top-0">
                         <tr>
                             <th className="bg-slate-700 text-white p-3 text-left font-semibold">Título</th>

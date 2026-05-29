@@ -7,6 +7,7 @@ import { Message } from "primereact/message";
 import AlunoRequests from "../../../fetch/AlunoRequests";
 import type AlunoDTO from "../../../dto/AlunoDTO";
 import { useNavigate } from "react-router-dom";
+import { ui } from "../../Comuns/styles";
 
 interface DetalhesAlunoProps {
     id_aluno: number;
@@ -82,7 +83,7 @@ function DetalhesAluno({ id_aluno }: DetalhesAlunoProps): JSX.Element {
 
     // Renderização dos detalhes do aluno
     return (
-        <main className="bg-gray-200 flex-1 py-4 sm:py-10 px-2 sm:px-4 overflow-y-auto">
+        <main className="bg-gray-200 flex-1 py-6 sm:py-10 px-3 sm:px-4 overflow-x-hidden">
             <Card 
                 title={
                     <div className="flex flex-col gap-1">
@@ -159,14 +160,14 @@ function DetalhesAluno({ id_aluno }: DetalhesAlunoProps): JSX.Element {
             </Card>
             <div className="w-full max-w-4xl mx-auto mt-8 flex flex-col gap-3 px-2 sm:px-0">
                 <button
-                    className="w-full bg-slate-700 hover:bg-slate-800 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 text-lg"
+                    className={ui.primaryButton}
                     onClick={() => navigate(`/atualizar/aluno/${aluno.id_aluno}`)}
                 >
                     <i className="pi pi-pencil"></i>
                     Editar Aluno
                 </button>
                 <button
-                    className="w-full bg-white text-slate-700 hover:bg-gray-50 border-2 border-slate-700 px-6 py-4 rounded-xl font-bold transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-lg"
+                    className={ui.secondaryButton}
                     onClick={() => navigate(`/alunos`)}
                 >
                     <i className="pi pi-arrow-left"></i>
