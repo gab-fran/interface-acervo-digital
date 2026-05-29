@@ -10,6 +10,7 @@ import PDetalhesAluno from './pages/PDetalhes/PDetalhesAluno'
 import PDetalhesLivro from './pages/PDetalhes/PDetalhesLivro'
 import PDetalhesEmprestimo from './pages/PDetalhes/PDetalhesEmprestimo'
 import PCadastroAluno from './pages/PCadastro/PCadastroAluno/PCadastroAluno'
+import PCadastroLivro from './pages/PCadastro/PCadastroLivro/PCadastroLivro'
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
         <Route path='/livro/detalhes/:id_livro' element={<ProtectedRoute element={PDetalhesLivro} />} />
         <Route path='/emprestimo/detalhes/:id_emprestimo' element={<ProtectedRoute element={PDetalhesEmprestimo} />} />
         <Route path='/cadastro/aluno' element={<ProtectedRoute element={PCadastroAluno} />} />
+        <Route path='/cadastro/livro' element={<ProtectedRoute element={PCadastroLivro} />} />
       </Routes>
     </BrowserRouter>
   )

@@ -33,25 +33,27 @@ class LivroRequests {
     }
 
     async enviarFormularioLivro(formLivro: LivroDTO): Promise<boolean> {
-        try {
-            const respostaAPI = await fetch(`${SERVER_CFG.SERVER_URL}${SERVER_CFG.ENDPOINT_LIVROS}`, {
-                method: 'POST',
-                headers: this.getHeaders(),
-                body: JSON.stringify(formLivro)
-            });
-
-            if (!respostaAPI.ok) {
-                throw new Error(`Erro ${respostaAPI.status}: ${respostaAPI.statusText}`);
+            try {
+                const token = localStorage.getItem('token');
+                const respostaAPI = await fetch(`${SERVER_CFG.SERVER_URL}${SERVER_CFG.ENDPOINT_LIVROS}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': `${token}`
+                    },
+                    body: JSON.stringify(formLivro)
+                });
+    
+                if (!respostaAPI.ok) throw new Error(`Erro ${respostaAPI.status}: ${respostaAPI.statusText}`);
+    
+                console.info(`${respostaAPI.status}: ${respostaAPI.statusText}`);
+    
+                return true;
+            } catch (error) {
+                console.error(`Erro ao fazer consulta à API. ${error}`);
+                return false;
             }
-
-            console.info(`${respostaAPI.status} ${respostaAPI.statusText}`);
-
-            return true;
-        } catch (error) {
-            console.error(`Erro ao fazer consulta à API. ${error}`);
-            return false;
         }
-    }
 
     async removerLivro(id_livro: number): Promise<boolean> {
         try {
