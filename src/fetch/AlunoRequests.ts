@@ -34,17 +34,19 @@ class AlunoRequests {
 
     async enviarFormularioAluno(formAluno: AlunoDTO): Promise<boolean> {
         try {
+            const token = localStorage.getItem('token');
             const respostaAPI = await fetch(`${SERVER_CFG.SERVER_URL}${SERVER_CFG.ENDPOINT_ALUNOS}`, {
                 method: 'POST',
-                headers: this.getHeaders(),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': `${token}`
+                },
                 body: JSON.stringify(formAluno)
             });
 
-            if (!respostaAPI.ok) {
-                throw new Error(`Erro ${respostaAPI.status}: ${respostaAPI.statusText}`);
-            }
+            if (!respostaAPI.ok) throw new Error(`Erro ${respostaAPI.status}: ${respostaAPI.statusText}`);
 
-            console.info(`${respostaAPI.status} ${respostaAPI.statusText}`);
+            console.info(`${respostaAPI.status}: ${respostaAPI.statusText}`);
 
             return true;
         } catch (error) {

@@ -9,6 +9,7 @@ import PLivros from './pages/PListagens/PLivros/PLivros'
 import PDetalhesAluno from './pages/PDetalhes/PDetalhesAluno'
 import PDetalhesLivro from './pages/PDetalhes/PDetalhesLivro'
 import PDetalhesEmprestimo from './pages/PDetalhes/PDetalhesEmprestimo'
+import PCadastroAluno from './pages/PCadastro/PCadastroAluno/PCadastroAluno'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path='/aluno/detalhes/:id_aluno' element={<ProtectedRoute element={PDetalhesAluno} />} />
         <Route path='/livro/detalhes/:id_livro' element={<ProtectedRoute element={PDetalhesLivro} />} />
         <Route path='/emprestimo/detalhes/:id_emprestimo' element={<ProtectedRoute element={PDetalhesEmprestimo} />} />
+        <Route path='/cadastro/aluno' element={<ProtectedRoute element={PCadastroAluno} />} />
       </Routes>
     </BrowserRouter>
   )
